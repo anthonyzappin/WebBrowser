@@ -4,9 +4,9 @@ import json
 
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                              QPushButton, QLabel, QLineEdit, QTabBar, QFrame,
-                             QStackedLayout, QTabWidget)
+                             QStackedLayout, QTabWidget, QShortcut, QKeySequenceEdit)
 
-from PyQt5.QtGui import QIcon, QWindow, QImage
+from PyQt5.QtGui import QIcon, QWindow, QImage, QKeySequence
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
 
@@ -25,10 +25,7 @@ class App(QFrame):
         self.setMinimumSize(1366, 768)
         self.CreateApp()
 
-
-
     def CreateApp(self):
-
         #Create the Main Layout and Spacing
         self.layout = QVBoxLayout()
         self.layout.setSpacing(0)
@@ -40,6 +37,15 @@ class App(QFrame):
         self.tabbar.tabBarClicked.connect(self.SwitchTab)
         self.tabbar.setCurrentIndex(0)
         self.tabbar.setDrawBase(False)
+        self.tabbar.setLayoutDirection(Qt.LeftToRight)
+        self.tabbar.setElideMode(Qt.ElideLeft)
+
+        # Keyboard shortcuts
+        self.shortcutNewTab = QShortcut(QKeySequence("Ctrl+T"), self)
+        self.shortcutNewTab.activated.connect(self.AddTab)
+
+        self.shortcutReload = QShortcut(QKeySequence("Ctrl+R"), self)
+        self.shortcutReload.activated.connect(self.ReloadPage)
 
         #Keep track of tabs
         self.tabCount = 0
